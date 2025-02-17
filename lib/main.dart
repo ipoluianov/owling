@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:owling/cetus.dart';
+import 'package:owling/common/cetus.dart';
+import 'package:owling/widgets/cetus_widget.dart';
+import 'package:owling/widgets/coin_balance_widget.dart';
 import 'package:sui/sui.dart';
 
 void main() {
@@ -39,16 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String addr =
       "0x4bb32c583f8c7f81df987115d6140737a8ea0900c900c0f110d7d36485fee2a9";
-  String cetusPosType =
-      "0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::position::Position";
 
-  late SuiClient client;
   CetusOfAddress? cetusOfAddress;
 
   @override
   void initState() {
     super.initState();
-    client = SuiClient("https://fullnode.mainnet.sui.io");
   }
 
   /**
@@ -133,155 +131,12 @@ var clmmMainnet = {
 
    */
 
-  Future<RewardSet> requestRewards(
-    String poolAddr,
-    String posId,
-    String t1,
-    String t2,
-  ) async {
-    var tx = Transaction();
-    var result = RewardSet();
-    result.reward1.coinType = t1;
-    result.reward2.coinType = t2;
-
-    // 0: 0x3a5aa90ffa33d09100d7b6941ea1c0ffe6ab66e77062ddd26320c1b073aabb10::fetcher_script::fetch_position_rewards
-    // 1: 0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f - global config
-    // 2: - pool address
-    // 3: - position id
-    // 4: - clock address
-
-    String target =
-        "0x3a5aa90ffa33d09100d7b6941ea1c0ffe6ab66e77062ddd26320c1b073aabb10::fetcher_script::fetch_position_rewards";
-
-    // const typeArguments = [paramItem.coinTypeA, paramItem.coinTypeB];
-
-    var typeArguments = [t1, t2];
-
-    var clockAddr = "0x06";
-    var args = [
-      tx.object(
-        "0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f",
-      ),
-      tx.object(poolAddr),
-      tx.pure.address(posId),
-      tx.object(clockAddr),
-    ];
-    tx.moveCall(target, arguments: args, typeArguments: typeArguments);
-    var res = await client.devInspectTransactionBlock(addr, tx);
-    print(
-      "-------------------------------------------------------------------------",
-    );
-    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-    print(res);
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    print(
-      "-------------------------------------------------------------------------",
-    );
-
-    res.events.forEach((element) {
-      if (element.type.contains("FetchPositionRewardsEvent")) {
-        //print("FETCH REWARDS: ${element.parsedJson}");
-        var parsedJson = element.parsedJson;
-        var data = parsedJson!["data"];
-        if (data != null) {
-          /*var r1 = data[0];
-          var r2 = data[1];
-          print("REWARD 1: ${r1}");
-          print("REWARD 2: ${r2}");
-          result.reward1.amount = r1;
-          result.reward2.amount = r2;*/
-        }
-      }
-      print("EVENT: ${element}");
-    });
-
-    return result;
-  }
-
-  void loadCetusInfo() async {
-    SuiObjectDataOptions options = SuiObjectDataOptions(
-      showContent: true,
-      showOwner: true,
-    );
-
-    var ownedObjects = await client.getOwnedObjects(addr, options: options);
-
-    var cetus = CetusOfAddress();
-    cetus!.address = addr;
-
-    print("==================================");
-
-    for (var element in ownedObjects.data) {
-      if (element.data == null) {
-        return;
-      }
-      if (element.data!.content == null) {
-        return;
-      }
-
-      var content = element.data!.content;
-      //print("TYPE:" + content!.type);
-
-      if (content!.type == cetusPosType) {
-        var fields = content.fields;
-        var coinTypeA = fields["coin_type_a"]["fields"]["name"];
-        var coinTypeB = fields["coin_type_b"]["fields"]["name"];
-        var poolId = fields["pool"];
-        var positionId = fields["id"]["id"];
-
-        CetusPoolPosition poolPosition = CetusPoolPosition();
-        poolPosition.id = positionId;
-        poolPosition.poolId = poolId;
-        poolPosition.coinTypeA = coinTypeA;
-        poolPosition.coinTypeB = coinTypeB;
-        cetus.positions.add(poolPosition);
-
-        var rewards = await requestRewards(
-          poolId,
-          positionId,
-          coinTypeA,
-          coinTypeB,
-        );
-        poolPosition.rewards = rewards;
-
-        /*print("POOL ID: $poolId");
-              print("POSITION ID: $positionId");
-              print("FOUND POSITION: ${content.fields}");
-              print("COIN TYPE A: ${coinTypeA}");
-              print("COIN TYPE B: ${coinTypeB}");
-              */
-      }
-    }
-
-    setState(() {
-      cetusOfAddress = cetus;
-    });
-  }
-
   void _incrementCounter() {
-    loadCetusInfo();
+    
     //return;
     setState(() {
       _loading = true;
     });
-
-    client
-        .getBalance(
-          "0x4bb32c583f8c7f81df987115d6140737a8ea0900c900c0f110d7d36485fee2a9",
-        )
-        .then((value) {
-          setState(() {
-            _balance = value.totalBalance / BigInt.from(10).pow(9);
-            _loading = false;
-            _error = "";
-          });
-        })
-        .catchError((error) {
-          setState(() {
-            _loading = false;
-            _error = error.toString();
-          });
-        });
   }
 
   Widget buildCetusInfo() {
@@ -331,6 +186,8 @@ var clmmMainnet = {
               const SizedBox(width: 64, height: 64),
             if (_error.isNotEmpty) Text('Error: $_error') else const SizedBox(),
             buildCetusInfo(),
+            CoinBalanceWidget(addr, coinTypeSUI),
+            CetusWidget(addr),
           ],
         ),
       ),
