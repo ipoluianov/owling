@@ -6,7 +6,6 @@ import 'package:owling/core/route_generator.dart';
 import 'package:owling/forms/nodes/main_form/main_form.dart';
 import 'package:owling/widgets/cetus_widget.dart';
 import 'package:owling/widgets/coin_balance_widget.dart';
-import 'package:sui/sui.dart';
 
 void main() {
   FontWeight fontWeight = FontWeight.w400;

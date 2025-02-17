@@ -92,7 +92,7 @@ class AboutFormSt extends State<AboutForm> {
                                   ),
                                 ),
                                 onTap: () {
-                                  var url = Uri.parse("https://gazer.cloud/");
+                                  //var url = Uri.parse("https://gazer.cloud/");
                                   //launchUrl(url);
                                 }),
                             InkWell(
@@ -106,8 +106,8 @@ class AboutFormSt extends State<AboutForm> {
                                   ),
                                 ),
                                 onTap: () {
-                                  var url = Uri.parse(
-                                      "https://github.com/ipoluianov/gazer_client");
+                                  /*var url = Uri.parse(
+                                      "https://github.com/ipoluianov/gazer_client");*/
                                   //launchUrl(url);
                                 }),
                           ],

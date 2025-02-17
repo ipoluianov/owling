@@ -54,17 +54,17 @@ class BottomNavigator extends StatelessWidget {
 
   Widget buildBottomBar(context) {
     bool showHome = true;
-    bool showUnits = true;
+    /*bool showUnits = true;
     bool showCharts = true;
-    bool showMaps = true;
+    bool showMaps = true;*/
     bool showMore = true;
 
     switch (navCurrentPath(context)) {
       case "/":
         showHome = false;
-        showUnits = false;
+        /*showUnits = false;
         showCharts = false;
-        showMaps = false;
+        showMaps = false;*/
         showMore = false;
         break;
     }

@@ -34,8 +34,8 @@ class Border04Painter extends CustomPainter {
 
   List<Offset> buildPoints(Rect rect) {
     List<Offset> points = [];
-    var cornerRadius1 = 0;
-    var cornerRadius2 = 6;
+    //var cornerRadius1 = 0;
+    //var cornerRadius2 = 6;
 
     points.add(Offset(rect.left, rect.top));
     points.add(Offset(rect.right, rect.top));

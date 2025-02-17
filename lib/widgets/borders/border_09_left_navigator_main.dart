@@ -40,7 +40,7 @@ class Border09Painter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
-    Color backColor = DesignColors.back();
+    //Color backColor = DesignColors.back();
 
     {
       // Draw border

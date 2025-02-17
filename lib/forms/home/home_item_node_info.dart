@@ -5,7 +5,6 @@ import 'package:owling/core/base/app.dart';
 import 'package:owling/core/base/get_balance.dart';
 import 'package:owling/core/common/cetus.dart';
 import 'package:owling/core/design.dart';
-import 'package:owling/core/tools/short_address.dart';
 import 'package:owling/widgets/address_widget.dart';
 import 'package:owling/widgets/owned_objects_widget/owned_objects_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -64,7 +63,7 @@ class HomeItemNodeInfoState extends State<HomeItemNodeInfo> {
         widget.arg.connection.address,
         coinTypeSUI,
       );
-      if (bal != null) {
+      {
         var b = await bal.amountString();
         setState(() {
           accountBalance = bal;

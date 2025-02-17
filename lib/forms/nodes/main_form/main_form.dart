@@ -228,9 +228,9 @@ class MainFormSt extends State<MainForm> {
     print("================ build ==============");
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool narrow = constraints.maxWidth < 600;
-        bool showLeft = !narrow;
-        bool showBottom = narrow;
+        //bool narrow = constraints.maxWidth < 600;
+        //bool showLeft = !narrow;
+        //bool showBottom = narrow;
 
         String version = "";
 

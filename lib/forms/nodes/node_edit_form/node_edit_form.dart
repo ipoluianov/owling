@@ -181,8 +181,8 @@ class NodeEditFormSt extends State<NodeEditForm> {
 
   MobileScannerController cameraController = MobileScannerController();
 
-  final ValueNotifier<double> _height2 = ValueNotifier<double>(100);
-  final ValueNotifier<double> _height3 = ValueNotifier<double>(200);
+  //final ValueNotifier<double> _height2 = ValueNotifier<double>(100);
+  //final ValueNotifier<double> _height3 = ValueNotifier<double>(200);
 
   Widget buildQRCodeScanner(BuildContext context) {
     return Scaffold(
@@ -190,7 +190,7 @@ class NodeEditFormSt extends State<NodeEditForm> {
         Connection.makeDefault(),
         "Connect To Node",
         actions: [
-          IconButton(
+          /*IconButton(
             color: Colors.white,
             icon: ValueListenableBuilder(
               valueListenable: _height3,
@@ -224,7 +224,7 @@ class NodeEditFormSt extends State<NodeEditForm> {
             ),
             iconSize: 32.0,
             onPressed: () => cameraController.switchCamera(),
-          ),
+          ),*/
         ],
       ),
       body: MobileScanner(

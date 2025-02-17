@@ -38,7 +38,7 @@ class Border08Painter extends CustomPainter {
 
   List<Offset> buildPoints(Rect rect) {
     List<Offset> points = [];
-    var cornerRadius = calcCornerRadius();
+    //var cornerRadius = calcCornerRadius();
     points.add(Offset(rect.left, rect.top));
     points.add(Offset(rect.right, rect.top));
     points.add(Offset(rect.right, rect.bottom));
@@ -48,7 +48,7 @@ class Border08Painter extends CustomPainter {
 
   List<Offset> buildPointsBorder(Rect rect) {
     List<Offset> points = [];
-    var cornerRadius = calcCornerRadius();
+    //var cornerRadius = calcCornerRadius();
     //points.add(Offset(rect.left, rect.top));
     //points.add(Offset(rect.right, rect.top));
     points.add(Offset(rect.right, rect.bottom));

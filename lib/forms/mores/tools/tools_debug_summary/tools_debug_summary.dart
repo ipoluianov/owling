@@ -1,16 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:owling/core/design.dart';
 import 'package:owling/core/navigation.dart';
 import 'package:owling/core/navigation/bottom_navigator.dart';
 import 'package:owling/core/navigation/left_navigator.dart';
 import 'package:owling/core/route_generator.dart';
 import 'package:owling/widgets/title_bar/title_bar.dart';
-
-import '../../../../core/repository.dart';
-import '../../more_form/more_button.dart';
 
 class ToolsDebugSummaryForm extends StatefulWidget {
   final ToolsFormArgument arg;
@@ -147,7 +143,7 @@ class ToolsDebugSummaryFormSt extends State<ToolsDebugSummaryForm> {
   }
 
   String txtNodeName = "";
-  final TextEditingController _textFieldController = TextEditingController();
+  //final TextEditingController _textFieldController = TextEditingController();
 
   int currentTitleKey = 0;
   void incrementTitleKey() {

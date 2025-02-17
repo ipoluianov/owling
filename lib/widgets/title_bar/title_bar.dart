@@ -135,7 +135,7 @@ class TitleBarSt extends State<TitleBar> {
       billingInfo = Repository().client(widget.connection!).billingInfo();
     }*/
 
-    Color colorOfValue = Colors.green;
+    //Color colorOfValue = Colors.green;
 
     Widget innerWidget = Container();
 

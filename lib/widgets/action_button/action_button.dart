@@ -65,7 +65,7 @@ class ActionButtonState extends State<ActionButton> {
     }
 
     Color imageColor = widget.imageColor ?? DesignColors.fore();
-    Color backColor = widget.backColor ?? Colors.black38;
+    //Color backColor = widget.backColor ?? Colors.black38;
 
     return SizedBox(
       width: 56,

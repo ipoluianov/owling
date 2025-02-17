@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:owling/core/design.dart';
 import 'package:owling/core/navigation.dart';
@@ -10,9 +6,7 @@ import 'package:owling/core/navigation/left_navigator.dart';
 import 'package:owling/core/route_generator.dart';
 import 'package:owling/widgets/title_bar/title_bar.dart';
 
-import '../../core/repository.dart';
-import 'home_item.dart';
-import 'home_item_node_info.dart';
+
 
 class HomeConfigForm extends StatefulWidget {
   final HomeConfigFormArgument arg;
@@ -25,7 +19,7 @@ class HomeConfigForm extends StatefulWidget {
 }
 
 class HomeConfigFormSt extends State<HomeConfigForm> {
-  final ScrollController _scrollController = ScrollController();
+  //final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {

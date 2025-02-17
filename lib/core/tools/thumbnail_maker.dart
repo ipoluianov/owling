@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui' as dart_ui;
 
 import 'package:image/image.dart';
 
