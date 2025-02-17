@@ -10,7 +10,12 @@ class BottomNavigator extends StatelessWidget {
   const BottomNavigator(this.show, {Key? key}) : super(key: key);
 
   Widget buildBottomBarButton(
-      context, int index, String text, IconData iconData, Function()? onPress) {
+    context,
+    int index,
+    String text,
+    IconData iconData,
+    Function()? onPress,
+  ) {
     return Expanded(
       child: Container(
         height: 60,
@@ -54,6 +59,7 @@ class BottomNavigator extends StatelessWidget {
 
   Widget buildBottomBar(context) {
     bool showHome = true;
+    bool showCetus = true;
     /*bool showUnits = true;
     bool showCharts = true;
     bool showMaps = true;*/
@@ -74,10 +80,7 @@ class BottomNavigator extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.black12,
           border: Border(
-            top: BorderSide(
-              color: DesignColors.fore2(),
-              width: 0.5,
-            ),
+            top: BorderSide(color: DesignColors.fore2(), width: 0.5),
           ),
         ),
         child: Row(
@@ -85,22 +88,48 @@ class BottomNavigator extends StatelessWidget {
           children: [
             showHome
                 ? buildBottomBarButton(context, 0, "Home", Icons.apps, () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    Navigator.of(context).pop();
-                    Navigator.pushNamed(context, "/home",
-                        arguments: HomeFormArgument(
-                            Repository().lastSelectedConnection));
-                  })
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(
+                    context,
+                    "/home",
+                    arguments: HomeFormArgument(
+                      Repository().lastSelectedConnection,
+                    ),
+                  );
+                })
+                : Container(),
+            showCetus
+                ? buildBottomBarButton(context, 1, "Cetus", Icons.apps, () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(
+                    context,
+                    "/cetus",
+                    arguments: CommonFormArgument(
+                      Repository().lastSelectedConnection,
+                    ),
+                  );
+                })
                 : Container(),
             showMore
-                ? buildBottomBarButton(context, 4, "More", Icons.more_horiz,
-                    () {
+                ? buildBottomBarButton(
+                  context,
+                  4,
+                  "More",
+                  Icons.more_horiz,
+                  () {
                     Navigator.of(context).popUntil((route) => route.isFirst);
                     Navigator.of(context).pop();
-                    Navigator.pushNamed(context, "/more",
-                        arguments: MoreFormArgument(
-                            Repository().lastSelectedConnection));
-                  })
+                    Navigator.pushNamed(
+                      context,
+                      "/more",
+                      arguments: MoreFormArgument(
+                        Repository().lastSelectedConnection,
+                      ),
+                    );
+                  },
+                )
                 : Container(),
           ],
         ),

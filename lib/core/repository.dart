@@ -4,7 +4,7 @@ import 'package:owling/forms/home/home_config.dart';
 import 'package:pointycastle/api.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 
-enum NavIndex { home, units, charts, maps, more }
+enum NavIndex { home, cetus, more }
 
 class Repository {
   static final Repository _singleton = Repository._internal();
@@ -15,7 +15,7 @@ class Repository {
 
   String lastPath = "/";
   Connection lastSelectedConnection = Connection.makeDefault();
-  NavIndex navIndex = NavIndex.units;
+  NavIndex navIndex = NavIndex.home;
 
   late AsymmetricKeyPair<RSAPublicKey, RSAPrivateKey> mainKeyPair;
   bool peerLoaded = false;

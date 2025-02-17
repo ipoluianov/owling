@@ -30,12 +30,8 @@ int navCurrentIndex(context) {
   switch (Repository().navIndex) {
     case NavIndex.home:
       return 0;
-    case NavIndex.units:
+    case NavIndex.cetus:
       return 1;
-    case NavIndex.charts:
-      return 2;
-    case NavIndex.maps:
-      return 3;
     case NavIndex.more:
       return 4;
   }
@@ -53,36 +49,49 @@ String navCurrentPath(context) {
 }
 
 Widget buildActionButton(
-    context, IconData? icon, String tooltip, Function() onPress,
-    {key}) {
-  return buildActionButtonFull(context, icon, tooltip, onPress, false,
-      key: key);
+  context,
+  IconData? icon,
+  String tooltip,
+  Function() onPress, {
+  key,
+}) {
+  return buildActionButtonFull(
+    context,
+    icon,
+    tooltip,
+    onPress,
+    false,
+    key: key,
+  );
 }
 
 Widget buildActionButtonFull(
-    context, IconData? icon, String tooltip, Function() onPress, bool checked,
-    {Color? imageColor, Color? backColor, key}) {
+  context,
+  IconData? icon,
+  String tooltip,
+  Function() onPress,
+  bool checked, {
+  Color? imageColor,
+  Color? backColor,
+  key,
+}) {
   return ActionButton(
-      icon: icon,
-      tooltip: tooltip,
-      onPress: onPress,
-      checked: checked,
-      imageColor: imageColor,
-      backColor: backColor,
-      key: key);
+    icon: icon,
+    tooltip: tooltip,
+    onPress: onPress,
+    checked: checked,
+    imageColor: imageColor,
+    backColor: backColor,
+    key: key,
+  );
 }
 
 Widget buildHomeButton(context) {
   return Container(
     padding: const EdgeInsets.only(left: 5),
-    child: buildActionButton(
-      context,
-      Icons.home_outlined,
-      "List of Nodes",
-      () {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.popAndPushNamed(context, "/", arguments: MainFormArgument());
-      },
-    ),
+    child: buildActionButton(context, Icons.home_outlined, "List of Nodes", () {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.popAndPushNamed(context, "/", arguments: MainFormArgument());
+    }),
   );
 }

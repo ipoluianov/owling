@@ -3,18 +3,52 @@ import 'package:sui/sui.dart';
 import '../common/cetus.dart';
 import 'app.dart';
 
-class CetusApi
-{
-    String cetusPosType =
+class CetusApi {
+  String cetusPosType =
       "0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::position::Position";
 
-    Future<CetusOfAddress> loadCetusInfoOfAccount(String addr) async {
+  Future<List<CetusPoolPosition>> loadCetusPositions(String addr) async {
+    var ownedObjects = await App().loadOwnedObjects(addr);
+    List<CetusPoolPosition> positions = [];
+    for (var element in ownedObjects) {
+      if (element.type != cetusPosType) {
+        continue;
+      }
+
+      SuiObjectDataOptions options = SuiObjectDataOptions(
+        showContent: true,
+        showOwner: true,
+      );
+      var obj = await App().client.getObject(element.id, options: options);
+      var content = obj.data!.content;
+
+      var fields = content!.fields;
+      var coinTypeA = fields["coin_type_a"]["fields"]["name"];
+      var coinTypeB = fields["coin_type_b"]["fields"]["name"];
+      var poolId = fields["pool"];
+      //var positionId = fields["id"]["id"];
+
+      CetusPoolPosition poolPosition = CetusPoolPosition();
+      poolPosition.id = element.id;
+      poolPosition.poolId = poolId;
+      poolPosition.coinTypeA = coinTypeA;
+      poolPosition.coinTypeB = coinTypeB;
+      positions.add(poolPosition);
+    }
+
+    return positions;
+  }
+
+  Future<CetusOfAddress> loadCetusInfoOfAccount(String addr) async {
     SuiObjectDataOptions options = SuiObjectDataOptions(
       showContent: true,
       showOwner: true,
     );
 
-    var ownedObjects = await App().client.getOwnedObjects(addr, options: options);
+    var ownedObjects = await App().client.getOwnedObjects(
+      addr,
+      options: options,
+    );
 
     var cetus = CetusOfAddress();
     cetus.address = addr;
@@ -67,8 +101,8 @@ class CetusApi
     return cetus;
   }
 
-    Future<RewardSet> requestRewards(
-      String addr,
+  Future<RewardSet> requestRewards(
+    String addr,
     String poolAddr,
     String posId,
     String t1,
@@ -132,6 +166,4 @@ class CetusApi
 
     return result;
   }
-
-
 }

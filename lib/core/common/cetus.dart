@@ -45,7 +45,8 @@ class CoinInfo {
   String error = '';
 }
 
-const String coinTypeSUI = "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI";
+const String coinTypeSUI =
+    "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI";
 
 class ObjectInfo {
   String id = '';

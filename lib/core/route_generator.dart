@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owling/core/repository.dart';
 import 'package:owling/core/workspace/workspace.dart';
+import 'package:owling/forms/cetus/cetus_form.dart';
 import 'package:owling/forms/home/home_config.dart';
 import 'package:owling/forms/mores/about_form/about_form.dart';
 import 'package:owling/forms/mores/tools/tools_debug_summary/tools_debug_summary.dart';
@@ -33,15 +34,11 @@ class RouteGenerator {
       Repository().lastSelectedConnection =
           (settings.arguments as NodeFormArgument).connection;
     }
-
   }
 
   static Widget transBuilder(context, animation, secondaryAnimation, child) {
     //return child;
-    return FadeTransition(
-      opacity: animation,
-      child: child,
-    );
+    return FadeTransition(opacity: animation, child: child);
   }
 
   static Duration transDuration() {
@@ -53,10 +50,13 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        Repository().navIndex = NavIndex.units;
+        Repository().navIndex = NavIndex.home;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
             return const MainForm();
           },
           transitionsBuilder: transBuilder,
@@ -64,13 +64,14 @@ class RouteGenerator {
           reverseTransitionDuration: transDuration(),
         );
       case '/node':
-        Repository().navIndex = NavIndex.units;
+        Repository().navIndex = NavIndex.home;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return NodeForm(
-              arg: settings.arguments as NodeFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return NodeForm(arg: settings.arguments as NodeFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -79,11 +80,12 @@ class RouteGenerator {
       case '/home':
         Repository().navIndex = NavIndex.home;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return HomeForm(
-              settings.arguments as HomeFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return HomeForm(settings.arguments as HomeFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -92,11 +94,12 @@ class RouteGenerator {
       case '/home_add_item':
         Repository().navIndex = NavIndex.home;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return HomeAddItem(
-              settings.arguments as HomeAddItemArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return HomeAddItem(settings.arguments as HomeAddItemArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -105,11 +108,12 @@ class RouteGenerator {
       case '/home_config_form':
         Repository().navIndex = NavIndex.home;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return HomeConfigForm(
-              settings.arguments as HomeConfigFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return HomeConfigForm(settings.arguments as HomeConfigFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -118,11 +122,26 @@ class RouteGenerator {
       case '/more':
         Repository().navIndex = NavIndex.more;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return MoreForm(
-              settings.arguments as MoreFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return MoreForm(settings.arguments as MoreFormArgument);
+          },
+          transitionsBuilder: transBuilder,
+          transitionDuration: transDuration(),
+          reverseTransitionDuration: transDuration(),
+        );
+      case '/cetus':
+        Repository().navIndex = NavIndex.cetus;
+        return PageRouteBuilder(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return CetusForm(settings.arguments as CommonFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -131,11 +150,12 @@ class RouteGenerator {
       case '/about':
         Repository().navIndex = NavIndex.more;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return AboutForm(
-              settings.arguments as AboutFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return AboutForm(settings.arguments as AboutFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -144,11 +164,12 @@ class RouteGenerator {
       case '/appearance':
         Repository().navIndex = NavIndex.more;
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return AppearanceForm(
-              settings.arguments as AppearanceFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return AppearanceForm(settings.arguments as AppearanceFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -156,11 +177,12 @@ class RouteGenerator {
         );
       case '/node_add':
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return NodeAddForm(
-              arg: settings.arguments as NodeAddFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return NodeAddForm(arg: settings.arguments as NodeAddFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
@@ -168,8 +190,11 @@ class RouteGenerator {
         );
       case '/node_edit':
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
             return NodeEditForm(
               arg: settings.arguments as NodeEditFormArgument,
             );
@@ -180,20 +205,24 @@ class RouteGenerator {
         );
       case '/tools_menu':
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return ToolsForm(
-              settings.arguments as ToolsFormArgument,
-            );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return ToolsForm(settings.arguments as ToolsFormArgument);
           },
           transitionsBuilder: transBuilder,
           transitionDuration: transDuration(),
           reverseTransitionDuration: transDuration(),
         );
-              case '/tools_debug_summary':
+      case '/tools_debug_summary':
         return PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
             return ToolsDebugSummaryForm(
               settings.arguments as ToolsFormArgument,
             );
@@ -202,7 +231,6 @@ class RouteGenerator {
           transitionDuration: transDuration(),
           reverseTransitionDuration: transDuration(),
         );
-
     }
     return MaterialPageRoute(builder: (_) => const Text("wrong path"));
   }
@@ -223,6 +251,11 @@ class ChartGroupsFormArgument {
 class MoreFormArgument {
   Connection connection;
   MoreFormArgument(this.connection);
+}
+
+class CommonFormArgument {
+  Connection connection;
+  CommonFormArgument(this.connection);
 }
 
 class ToolsFormArgument {
@@ -276,7 +309,11 @@ class MapsFormArgument {
   String folderId;
   String folderName;
   MapsFormArgument(
-      this.connection, this.filterByFolder, this.folderId, this.folderName);
+    this.connection,
+    this.filterByFolder,
+    this.folderId,
+    this.folderName,
+  );
 }
 
 class MapFormArgument {
@@ -292,10 +329,14 @@ class ResourceItemAddFormArgument {
   String folder;
   String typeName;
   String typeNamePlural;
-  ResourceItemAddFormArgument(this.connection, this.type, this.folder,
-      this.typeName, this.typeNamePlural);
+  ResourceItemAddFormArgument(
+    this.connection,
+    this.type,
+    this.folder,
+    this.typeName,
+    this.typeNamePlural,
+  );
 }
-
 
 class MapItemDecorationAddFormArgument {
   Connection connection;

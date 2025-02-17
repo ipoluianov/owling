@@ -38,7 +38,7 @@ class App {
 
     try {
       var getCoinMetadataResult = await client.getCoinMetadata(coinType);
-      
+
       coinInfo.coinType = getCoinMetadataResult.id;
       coinInfo.name = getCoinMetadataResult.name;
       coinInfo.symbol = getCoinMetadataResult.symbol;
@@ -52,5 +52,51 @@ class App {
     }
 
     return coinInfo;
+  }
+
+  Future<List<ObjectInfo>> loadOwnedObjects(String addr) async {
+    List<ObjectInfo> ownedObjects = [];
+    String? nextCursor;
+    bool firstIteration = true;
+    SuiObjectDataOptions options = SuiObjectDataOptions();
+    options.showType = true;
+    options.showOwner = true;
+    options.showDisplay = true;
+    options.showContent = false;
+    while (firstIteration || nextCursor != null) {
+      firstIteration = false;
+      var getOwnedObjectsResult = await App().client.getOwnedObjects(
+        addr,
+        cursor: nextCursor,
+        limit: 50,
+        options: options,
+      );
+      if (getOwnedObjectsResult.hasNextPage) {
+        nextCursor = getOwnedObjectsResult.nextCursor;
+      } else {
+        nextCursor = null;
+      }
+      for (SuiObjectResponse obj in getOwnedObjectsResult.data) {
+        ObjectInfo info = ObjectInfo();
+        if (obj.data == null) {
+          continue;
+        }
+        info.id = obj.data!.objectId;
+        info.type = obj.data!.type ?? "";
+
+        if (obj.data!.owner != null) {
+          if (obj.data!.owner!.addressOwner != null) {
+            info.owner = obj.data!.owner!.addressOwner!;
+          }
+          if (obj.data!.owner!.objectOwner != null) {
+            info.owner = obj.data!.owner!.objectOwner!;
+          }
+        }
+
+        ownedObjects.add(info);
+      }
+    }
+
+    return ownedObjects;
   }
 }

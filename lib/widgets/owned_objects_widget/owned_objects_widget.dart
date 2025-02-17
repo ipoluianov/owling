@@ -93,6 +93,10 @@ class OwnedObjectsWidgetState extends State<OwnedObjectsWidget> {
         }
       }
 
+      if (!mounted) {
+        return;
+      }
+
       setState(() {});
     }
 
