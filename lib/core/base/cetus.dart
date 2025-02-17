@@ -26,6 +26,11 @@ class CetusApi {
       var coinTypeA = fields["coin_type_a"]["fields"]["name"];
       var coinTypeB = fields["coin_type_b"]["fields"]["name"];
       var poolId = fields["pool"];
+      var index = fields["index"];
+      var liquidity = fields["liquidity"];
+      var tickLowerIndex = fields["tick_lower_index"]["fields"]["bits"];
+      var tickUpperIndex = fields["tick_upper_index"]["fields"]["bits"];
+
       //var positionId = fields["id"]["id"];
 
       CetusPoolPosition poolPosition = CetusPoolPosition();
@@ -33,6 +38,10 @@ class CetusApi {
       poolPosition.poolId = poolId;
       poolPosition.coinTypeA = coinTypeA;
       poolPosition.coinTypeB = coinTypeB;
+      poolPosition.index = index;
+      poolPosition.liquidity = liquidity;
+      poolPosition.tickLowerIndex = tickLowerIndex;
+      poolPosition.tickUpperIndex = tickUpperIndex;
       positions.add(poolPosition);
     }
 

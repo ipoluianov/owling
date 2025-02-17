@@ -6,6 +6,10 @@ class CetusPoolPosition {
   String coinTypeA = '';
   String coinTypeB = '';
   RewardSet rewards = RewardSet();
+  String index = '';
+  String liquidity = '';
+  int tickLowerIndex = 0;
+  int tickUpperIndex = 0;
 }
 
 class Reward {

@@ -80,6 +80,20 @@ class CetusFormState extends State<CetusForm> {
                   color: DesignColors.mainBackgroundColor,
                 ),
               ),
+              Text(
+                "Range: ${position.tickLowerIndex} - ${position.tickUpperIndex}",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: DesignColors.mainBackgroundColor,
+                ),
+              ),
+              Text(
+                "Index: ${position.index} - Liq: ${position.liquidity}",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: DesignColors.mainBackgroundColor,
+                ),
+              ),
             ],
           ),
         ),
