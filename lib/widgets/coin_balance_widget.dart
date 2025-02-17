@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:owling/common/cetus.dart';
+import 'package:owling/core/common/cetus.dart';
 
-import '../base/app.dart';
-import '../base/get_balance.dart';
+import '../core/base/app.dart';
+import '../core/base/get_balance.dart';
 
 class CoinBalanceWidget extends StatefulWidget {
   final String address;

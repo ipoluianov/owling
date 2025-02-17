@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:owling/common/cetus.dart';
+import 'package:owling/core/common/cetus.dart';
 
-import '../base/app.dart';
+import '../core/base/app.dart';
 
 class CetusWidget extends StatefulWidget {
   final String address;

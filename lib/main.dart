@@ -1,11 +1,43 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:owling/common/cetus.dart';
+import 'package:owling/core/common/cetus.dart';
+import 'package:owling/core/route_generator.dart';
+import 'package:owling/forms/nodes/main_form/main_form.dart';
 import 'package:owling/widgets/cetus_widget.dart';
 import 'package:owling/widgets/coin_balance_widget.dart';
 import 'package:sui/sui.dart';
 
 void main() {
-  runApp(const MyApp());
+  FontWeight fontWeight = FontWeight.w400;
+
+  if (Platform.isMacOS) {
+    fontWeight = FontWeight.w200;
+  }
+
+  print("================ START ==============");
+
+  runApp(
+    MaterialApp(
+      title: 'OWLing',
+      debugShowCheckedModeBanner: false,
+      home: const MainForm(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        fontFamily: "Roboto",
+        textTheme: TextTheme(
+          bodySmall: TextStyle(fontWeight: fontWeight),
+          bodyLarge: TextStyle(fontWeight: fontWeight),
+          bodyMedium: TextStyle(fontWeight: fontWeight),
+        ),
+      ),
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+    ),
+  );
+
+  return;
 }
 
 class MyApp extends StatelessWidget {

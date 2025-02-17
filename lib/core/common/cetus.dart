@@ -1,4 +1,4 @@
-import 'package:owling/base/app.dart';
+import 'package:owling/core/base/app.dart';
 
 class CetusPoolPosition {
   String id = '';
@@ -51,4 +51,6 @@ class ObjectInfo {
   String id = '';
   String type = '';
   String owner = '';
+  String coinType = '';
+  CoinInfo coinInfo = CoinInfo();
 }
