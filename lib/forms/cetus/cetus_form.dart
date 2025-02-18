@@ -94,6 +94,13 @@ class CetusFormState extends State<CetusForm> {
                   color: DesignColors.mainBackgroundColor,
                 ),
               ),
+              Text(
+                "Fee: A: ${position.feeA} - B: ${position.feeB}",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: DesignColors.mainBackgroundColor,
+                ),
+              ),
             ],
           ),
         ),

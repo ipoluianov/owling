@@ -43,9 +43,61 @@ class CetusApi {
       poolPosition.tickLowerIndex = tickLowerIndex;
       poolPosition.tickUpperIndex = tickUpperIndex;
       positions.add(poolPosition);
+
+      var rewards = await fetchPosFeeAmount(
+        addr,
+        element.id,
+        poolId,
+        coinTypeA,
+        coinTypeB,
+      );
+
+      poolPosition.feeA = rewards.feeOwedA;
+      poolPosition.feeB = rewards.feeOwedB;
+
+      print("REWARDS A: ${rewards.feeOwedA}");
+      print("REWARDS B: ${rewards.feeOwedB}");
     }
 
     return positions;
+  }
+
+  Future<PosFeeAmount> fetchPosFeeAmount(
+    String addr,
+    String posId,
+    String poolAddr,
+    String tA,
+    String tB,
+  ) async {
+    var tx = Transaction();
+    var result = PosFeeAmount();
+    result.coinA = tA;
+    result.coinB = tB;
+
+    String target =
+        "0x3a5aa90ffa33d09100d7b6941ea1c0ffe6ab66e77062ddd26320c1b073aabb10::fetcher_script::fetch_position_fees";
+
+    var typeArguments = [tA, tB];
+
+    var args = [
+      tx.object(
+        "0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f",
+      ),
+      tx.object(poolAddr),
+      tx.pure.address(posId),
+    ];
+    tx.moveCall(target, arguments: args, typeArguments: typeArguments);
+    var res = await App().client.devInspectTransactionBlock(addr, tx);
+
+    res.events.forEach((element) {
+      if (element.type.contains("FetchPositionFeesEvent")) {
+        var parsedJson = element.parsedJson;
+        result.feeOwedA = parsedJson!["fee_owned_a"];
+        result.feeOwedB = parsedJson["fee_owned_b"];
+      }
+    });
+
+    return result;
   }
 
   Future<CetusOfAddress> loadCetusInfoOfAccount(String addr) async {
@@ -97,13 +149,6 @@ class CetusApi {
           coinTypeB,
         );
         poolPosition.rewards = rewards;
-
-        /*print("POOL ID: $poolId");
-              print("POSITION ID: $positionId");
-              print("FOUND POSITION: ${content.fields}");
-              print("COIN TYPE A: ${coinTypeA}");
-              print("COIN TYPE B: ${coinTypeB}");
-              */
       }
     }
 
@@ -146,19 +191,9 @@ class CetusApi {
     ];
     tx.moveCall(target, arguments: args, typeArguments: typeArguments);
     var res = await App().client.devInspectTransactionBlock(addr, tx);
-    print(
-      "-------------------------------------------------------------------------",
-    );
-    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-    print(res);
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    print(
-      "-------------------------------------------------------------------------",
-    );
 
     res.events.forEach((element) {
       if (element.type.contains("FetchPositionRewardsEvent")) {
-        //print("FETCH REWARDS: ${element.parsedJson}");
         var parsedJson = element.parsedJson;
         var data = parsedJson!["data"];
         if (data != null) {

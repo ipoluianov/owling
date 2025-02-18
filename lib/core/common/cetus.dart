@@ -10,11 +10,21 @@ class CetusPoolPosition {
   String liquidity = '';
   int tickLowerIndex = 0;
   int tickUpperIndex = 0;
+
+  String feeA = '';
+  String feeB = '';
 }
 
 class Reward {
   String coinType = '';
   int amount = 0;
+}
+
+class PosFeeAmount {
+  String coinA = '';
+  String coinB = '';
+  String feeOwedA = '';
+  String feeOwedB = '';
 }
 
 class RewardSet {
