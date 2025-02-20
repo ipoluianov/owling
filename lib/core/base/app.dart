@@ -24,6 +24,10 @@ class App {
   var coinInfoMap = <String, CoinInfo>{};
 
   Future<CoinInfo> getCoinInfo(String coinType) async {
+    if (!coinType.startsWith("0x")) {
+      coinType = "0x$coinType";
+    }
+
     if (coinInfoMap.containsKey(coinType)) {
       return coinInfoMap[coinType]!;
     }
@@ -31,7 +35,7 @@ class App {
     var coinInfo = CoinInfo();
 
     if (coinType == "") {
-      coinInfo.name = "---";
+      coinInfo.name = "[empty]";
       coinInfo.error = "coinType is empty";
       return coinInfo;
     }
@@ -53,6 +57,19 @@ class App {
 
     return coinInfo;
   }
+
+  /*
+  curl --location 'https://docs-demo.sui-mainnet.quiknode.pro/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "suix_getCoinMetadata",
+  "params": [
+    "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP"
+  ]
+}'
+   */
 
   Future<List<ObjectInfo>> loadOwnedObjects(String addr) async {
     List<ObjectInfo> ownedObjects = [];

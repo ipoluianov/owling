@@ -11,7 +11,7 @@ void main() {
   FontWeight fontWeight = FontWeight.w400;
 
   if (Platform.isMacOS) {
-    fontWeight = FontWeight.w200;
+    fontWeight = FontWeight.w300;
   }
 
   print("================ START ==============");
@@ -163,7 +163,6 @@ var clmmMainnet = {
    */
 
   void _incrementCounter() {
-    
     //return;
     setState(() {
       _loading = true;

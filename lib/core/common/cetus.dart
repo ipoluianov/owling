@@ -5,6 +5,8 @@ class CetusPoolPosition {
   String poolId = '';
   String coinTypeA = '';
   String coinTypeB = '';
+  CoinInfo coinInfoA = CoinInfo();
+  CoinInfo coinInfoB = CoinInfo();
   RewardSet rewards = RewardSet();
   String index = '';
   String liquidity = '';
@@ -12,12 +14,45 @@ class CetusPoolPosition {
   int tickUpperIndex = 0;
 
   String feeA = '';
+  double feeANormalized = 0;
   String feeB = '';
+  double feeBNormalized = 0;
+
+  PoolObject poolObject = PoolObject();
+}
+
+class PoolObjectRewarder {
+  String emissionsPerSecond = '';
+  String growthGlobal = '';
+  String coinName = '';
+}
+
+class PoolObject {
+  String coinA = '';
+  String coinB = '';
+  String currentSqrtPrice = '';
+  int currentTickIndex = 0;
+  String feeGrowthGlobalA = '';
+  String feeGrowthGlobalB = '';
+  String feeProtocolCoinA = '';
+  String feeProtocolCoinB = '';
+  String feeRate = '';
+  String index = '';
+  bool isPause = false;
+  String liquidity = '';
+
+  String rewarderManagerLastUpdatedTime = '';
+  String rewarderManagerPointGrowthGlobal = '';
+  String rewarderManagerPointReleased = '';
+
+  List<PoolObjectRewarder> rewarders = [];
 }
 
 class Reward {
   String coinType = '';
-  int amount = 0;
+  String amount = '';
+  double amountNormalized = 0;
+  CoinInfo coinInfo = CoinInfo();
 }
 
 class PosFeeAmount {

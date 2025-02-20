@@ -1,8 +1,6 @@
 import 'package:owling/core/design.dart';
 import 'package:owling/core/workspace/workspace.dart';
 import 'package:owling/forms/home/home_config.dart';
-import 'package:pointycastle/api.dart';
-import 'package:pointycastle/asymmetric/api.dart';
 
 enum NavIndex { home, cetus, more }
 
@@ -17,12 +15,7 @@ class Repository {
   Connection lastSelectedConnection = Connection.makeDefault();
   NavIndex navIndex = NavIndex.home;
 
-  late AsymmetricKeyPair<RSAPublicKey, RSAPrivateKey> mainKeyPair;
   bool peerLoaded = false;
-
-  void initPeer(AsymmetricKeyPair<RSAPublicKey, RSAPrivateKey> keyPair) {
-    mainKeyPair = keyPair;
-  }
 
   loadHomeConfig() async {
     return HomeConfig([]);

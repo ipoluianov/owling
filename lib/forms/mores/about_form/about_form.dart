@@ -30,15 +30,13 @@ class AboutFormSt extends State<AboutForm> {
         bool showLeft = !narrow;
         bool showBottom = narrow;
 
-        String version = "";
+        String version = "2.0.1";
 
         return Scaffold(
           appBar: TitleBar(
             widget.arg.connection,
             "About",
-            actions: <Widget>[
-              buildHomeButton(context),
-            ],
+            actions: <Widget>[buildHomeButton(context)],
           ),
           body: Container(
             color: DesignColors.mainBackgroundColor,
@@ -57,59 +55,64 @@ class AboutFormSt extends State<AboutForm> {
                               padding: const EdgeInsets.all(10),
                               child: const Image(
                                 image: AssetImage(
-                                    'assets/images/ios/Icon-App-40x40@1x.png'),
+                                  'assets/images/ios/Icon-App-40x40@1x.png',
+                                ),
                               ),
                             ),
                             Container(
                               padding: const EdgeInsets.all(10),
                               child: const Text(
-                                "Gazer Client",
+                                "OWLING",
                                 style: TextStyle(fontSize: 24),
                               ),
                             ),
                             Container(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                "v$version",
+                                "v $version",
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
                             Container(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                "Copyright (c ) Poluianov Ivan, 2021-${DateTime.now().year}",
+                                "Copyright (c) Poluianov Ivan, 2023-${DateTime.now().year}",
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
                             InkWell(
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  child: const Text(
-                                    'Gazer.Cloud',
-                                    style: TextStyle(
-                                        color: Colors.blueAccent,
-                                        decoration: TextDecoration.underline),
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                child: const Text(
+                                  'OWLING.U00.IO',
+                                  style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    //decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onTap: () {
-                                  //var url = Uri.parse("https://gazer.cloud/");
-                                  //launchUrl(url);
-                                }),
+                              ),
+                              onTap: () {
+                                //var url = Uri.parse("https://gazer.cloud/");
+                                //launchUrl(url);
+                              },
+                            ),
                             InkWell(
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  child: const Text(
-                                    'Source Code',
-                                    style: TextStyle(
-                                        color: Colors.blueAccent,
-                                        decoration: TextDecoration.underline),
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                child: const Text(
+                                  'GitHub',
+                                  style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    //decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onTap: () {
-                                  /*var url = Uri.parse(
+                              ),
+                              onTap: () {
+                                /*var url = Uri.parse(
                                       "https://github.com/ipoluianov/gazer_client");*/
-                                  //launchUrl(url);
-                                }),
+                                //launchUrl(url);
+                              },
+                            ),
                           ],
                         ),
                       ),

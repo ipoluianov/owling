@@ -7,6 +7,14 @@ class CetusApi {
   String cetusPosType =
       "0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::position::Position";
 
+  Future<double> amountNormalize(String coinType, BigInt amount) async {
+    var coinInfo = await App().getCoinInfo(coinType);
+    if (coinInfo.precision == 0) {
+      return amount.toDouble();
+    }
+    return (amount / BigInt.from(10).pow(coinInfo.precision)).toDouble();
+  }
+
   Future<List<CetusPoolPosition>> loadCetusPositions(String addr) async {
     var ownedObjects = await App().loadOwnedObjects(addr);
     List<CetusPoolPosition> positions = [];
@@ -44,7 +52,17 @@ class CetusApi {
       poolPosition.tickUpperIndex = tickUpperIndex;
       positions.add(poolPosition);
 
-      var rewards = await fetchPosFeeAmount(
+      var coinAInfo = await App().getCoinInfo(coinTypeA);
+      var coinBInfo = await App().getCoinInfo(coinTypeB);
+
+      poolPosition.coinInfoA = coinAInfo;
+      poolPosition.coinInfoB = coinBInfo;
+
+      //var poolObject = await App().client.getObject(poolPosition.poolId);
+      var poolObj = await fetchPoolObject(poolPosition.poolId);
+      poolPosition.poolObject = poolObj;
+
+      var fees = await fetchPosFeeAmount(
         addr,
         element.id,
         poolId,
@@ -52,14 +70,110 @@ class CetusApi {
         coinTypeB,
       );
 
-      poolPosition.feeA = rewards.feeOwedA;
-      poolPosition.feeB = rewards.feeOwedB;
+      poolPosition.feeA = fees.feeOwedA;
+      poolPosition.feeB = fees.feeOwedB;
 
-      print("REWARDS A: ${rewards.feeOwedA}");
-      print("REWARDS B: ${rewards.feeOwedB}");
+      var feeAsBigInt = BigInt.tryParse(fees.feeOwedA);
+      var feeBAsBigInt = BigInt.tryParse(fees.feeOwedB);
+
+      poolPosition.feeANormalized = await amountNormalize(
+        coinTypeA,
+        feeAsBigInt!,
+      );
+      poolPosition.feeBNormalized = await amountNormalize(
+        coinTypeB,
+        feeBAsBigInt!,
+      );
+
+      print("FEES A: ${fees.feeOwedA}");
+      print("FEES B: ${fees.feeOwedB}");
+
+      var rewards = await requestRewards(
+        addr,
+        poolId,
+        poolPosition.id,
+        coinTypeA,
+        coinTypeB,
+      );
+      poolPosition.rewards = rewards;
+
+      if (poolPosition.poolObject.rewarders.length == 2) {
+        var rewarder1 = poolPosition.poolObject.rewarders[0];
+        var rewarder2 = poolPosition.poolObject.rewarders[1];
+        var rewards = await requestRewards(
+          addr,
+          poolId,
+          poolPosition.id,
+          coinTypeA,
+          coinTypeB,
+        );
+        rewards.reward1.coinType = rewarder1.coinName;
+        rewards.reward2.coinType = rewarder2.coinName;
+
+        rewards.reward1.coinInfo = await App().getCoinInfo(rewarder1.coinName);
+        rewards.reward2.coinInfo = await App().getCoinInfo(rewarder2.coinName);
+
+        var reward1AsBigInt = BigInt.tryParse(rewards.reward1.amount);
+        var reward2AsBigInt = BigInt.tryParse(rewards.reward2.amount);
+
+        rewards.reward1.amountNormalized = await amountNormalize(
+          rewards.reward1.coinType,
+          reward1AsBigInt!,
+        );
+
+        rewards.reward2.amountNormalized = await amountNormalize(
+          rewards.reward2.coinType,
+          reward2AsBigInt!,
+        );
+
+        poolPosition.rewards = rewards;
+      }
     }
 
     return positions;
+  }
+
+  Future<PoolObject> fetchPoolObject(String poolAddr) async {
+    var result = PoolObject();
+    var options = SuiObjectDataOptions(showContent: true, showOwner: true);
+    var poolObject = await App().client.getObject(poolAddr, options: options);
+    var content = poolObject.data!.content;
+    var fields = content!.fields;
+
+    result.coinA = fields["coin_a"];
+    result.coinB = fields["coin_b"];
+    result.currentSqrtPrice = fields["current_sqrt_price"];
+    result.currentTickIndex = fields["current_tick_index"]["fields"]["bits"];
+    result.feeGrowthGlobalA = fields["fee_growth_global_a"];
+    result.feeGrowthGlobalB = fields["fee_growth_global_b"];
+    result.feeProtocolCoinA = fields["fee_protocol_coin_a"];
+    result.feeProtocolCoinB = fields["fee_protocol_coin_b"];
+    result.feeRate = fields["fee_rate"];
+    result.index = fields["index"];
+    result.isPause = fields["is_pause"];
+    result.liquidity = fields["liquidity"];
+
+    var rewarderManager = fields["rewarder_manager"]["fields"];
+    result.rewarderManagerLastUpdatedTime =
+        rewarderManager["last_updated_time"];
+    result.rewarderManagerPointGrowthGlobal =
+        rewarderManager["points_growth_global"];
+    result.rewarderManagerPointReleased = rewarderManager["points_released"];
+
+    var rewarders = rewarderManager["rewarders"];
+    for (var rewarder in rewarders) {
+      var rewarderObj = PoolObjectRewarder();
+      var rewarderFields = rewarder["fields"];
+      rewarderObj.emissionsPerSecond = rewarderFields["emissions_per_second"];
+      rewarderObj.growthGlobal = rewarderFields["growth_global"];
+      rewarderObj.coinName = rewarderFields["reward_coin"]["fields"]["name"];
+      result.rewarders.add(rewarderObj);
+    }
+
+    //print("Field 1: " +);
+
+    print(poolObject);
+    return result;
   }
 
   Future<PosFeeAmount> fetchPosFeeAmount(
@@ -164,8 +278,8 @@ class CetusApi {
   ) async {
     var tx = Transaction();
     var result = RewardSet();
-    result.reward1.coinType = t1;
-    result.reward2.coinType = t2;
+    //result.reward1.coinType = t1;
+    //result.reward2.coinType = t2;
 
     // 0: 0x3a5aa90ffa33d09100d7b6941ea1c0ffe6ab66e77062ddd26320c1b073aabb10::fetcher_script::fetch_position_rewards
     // 1: 0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f - global config
@@ -197,12 +311,10 @@ class CetusApi {
         var parsedJson = element.parsedJson;
         var data = parsedJson!["data"];
         if (data != null) {
-          /*var r1 = data[0];
+          var r1 = data[0];
           var r2 = data[1];
-          print("REWARD 1: ${r1}");
-          print("REWARD 2: ${r2}");
           result.reward1.amount = r1;
-          result.reward2.amount = r2;*/
+          result.reward2.amount = r2;
         }
       }
       print("EVENT: ${element}");

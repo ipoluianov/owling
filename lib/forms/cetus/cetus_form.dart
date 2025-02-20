@@ -30,9 +30,17 @@ class CetusFormState extends State<CetusForm> {
   }
 
   void load() async {
+    /*await App().cetusApi.fetchPoolObject(
+      "0xe01243f37f712ef87e556afb9b1d03d0fae13f96d324ec912daffc339dfdcbd2",
+    );*/
+
     var list = await App().cetusApi.loadCetusPositions(
       widget.arg.connection.address,
     );
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       cetusPositions = list;
     });
@@ -41,68 +49,53 @@ class CetusFormState extends State<CetusForm> {
   List<Widget> buildContent(BuildContext context) {
     List<Widget> result = [];
     for (CetusPoolPosition position in cetusPositions) {
+      var txt = "posId: ${position.id}";
+      txt += "\r\n";
+      txt += "poolId: ${position.poolId}";
+      txt += "\r\n";
+      txt += "coinTypeA: ${position.coinTypeA}";
+      txt += "\r\n";
+      txt += "coinTypeB: ${position.coinTypeB}";
+      txt += "\r\n";
+      txt += "tickLowerIndex: ${position.tickLowerIndex}";
+      txt += "\r\n";
+      txt += "tickUpperIndex: ${position.tickUpperIndex}";
+      txt += "\r\n";
+      txt += "liquidity: ${position.liquidity}";
+      txt += "\r\n";
+      txt += "index: ${position.index}";
+      txt += "\r\n";
+      txt += "liquidity: ${position.liquidity}";
+      txt += "\r\n";
+      txt += "feeA: ${position.feeA}";
+      txt += "\r\n";
+      txt += "feeB: ${position.feeB}";
+      txt += "\r\n";
+      txt += "=========================================";
+      txt += "\r\n";
+      txt += "PARSED:";
+      txt += "\r\n";
+      txt +=
+          "feeANormalized: ${position.feeANormalized} ${position.coinInfoA.symbol}";
+      txt += "\r\n";
+      txt +=
+          "feeBNormalized: ${position.feeBNormalized} ${position.coinInfoB.symbol}";
+      txt += "\r\n";
+      txt += "rewards:";
+      txt += "\r\n";
+      txt +=
+          "  rewardA: ${position.rewards.reward1.amountNormalized} ${position.rewards.reward1.coinInfo.symbol}";
+      txt += "\r\n";
+      txt +=
+          "  rewardB: ${position.rewards.reward2.amountNormalized} ${position.rewards.reward2.coinInfo.symbol}";
+      txt += "\r\n";
+
       result.add(
         Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: DesignColors.fore(),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                position.id,
-                style: TextStyle(
-                  fontSize: 24,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                position.poolId,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                position.coinTypeA,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                position.coinTypeB,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                "Range: ${position.tickLowerIndex} - ${position.tickUpperIndex}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                "Index: ${position.index} - Liq: ${position.liquidity}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-              Text(
-                "Fee: A: ${position.feeA} - B: ${position.feeB}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesignColors.mainBackgroundColor,
-                ),
-              ),
-            ],
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          child: Text(txt),
         ),
       );
     }
