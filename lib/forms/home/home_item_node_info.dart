@@ -72,10 +72,12 @@ class HomeItemNodeInfoState extends State<HomeItemNodeInfo> {
         });
       }
     } catch (e) {
-      setState(() {
-        loadingError = "$e";
-        loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          loadingError = "$e";
+          loading = false;
+        });
+      }
     }
   }
 

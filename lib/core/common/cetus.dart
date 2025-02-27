@@ -30,6 +30,8 @@ class PoolObjectRewarder {
 class PoolObject {
   String coinA = '';
   String coinB = '';
+  double coinANormalized = 0;
+  double coinBNormalized = 0;
   String currentSqrtPrice = '';
   int currentTickIndex = 0;
   String feeGrowthGlobalA = '';
@@ -40,6 +42,7 @@ class PoolObject {
   String index = '';
   bool isPause = false;
   String liquidity = '';
+  double price = 0;
 
   String rewarderManagerLastUpdatedTime = '';
   String rewarderManagerPointGrowthGlobal = '';

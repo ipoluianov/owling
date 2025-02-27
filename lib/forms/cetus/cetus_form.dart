@@ -41,6 +41,11 @@ class CetusFormState extends State<CetusForm> {
       return;
     }
 
+    App().cetusApi.getPoolsByCoins(
+      "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+      "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP",
+    );
+
     setState(() {
       cetusPositions = list;
     });
@@ -89,6 +94,9 @@ class CetusFormState extends State<CetusForm> {
       txt +=
           "  rewardB: ${position.rewards.reward2.amountNormalized} ${position.rewards.reward2.coinInfo.symbol}";
       txt += "\r\n";
+      txt += "CurrentTickIndex: ${position.poolObject.currentTickIndex}";
+      txt += "\r\n";
+      txt += "Price: ${position.poolObject.price}";
 
       result.add(
         Container(

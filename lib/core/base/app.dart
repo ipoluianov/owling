@@ -23,6 +23,12 @@ class App {
 
   var coinInfoMap = <String, CoinInfo>{};
 
+  Future<double> getPriceInSUI(String coinType) async {
+    return 0;
+  }
+
+  //Future<double> getPriceInUSD(String coinType) async {}
+
   Future<CoinInfo> getCoinInfo(String coinType) async {
     if (!coinType.startsWith("0x")) {
       coinType = "0x$coinType";
@@ -57,19 +63,6 @@ class App {
 
     return coinInfo;
   }
-
-  /*
-  curl --location 'https://docs-demo.sui-mainnet.quiknode.pro/' \
---header 'Content-Type: application/json' \
---data '{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "suix_getCoinMetadata",
-  "params": [
-    "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP"
-  ]
-}'
-   */
 
   Future<List<ObjectInfo>> loadOwnedObjects(String addr) async {
     List<ObjectInfo> ownedObjects = [];
